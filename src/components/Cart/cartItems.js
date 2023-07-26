@@ -11,7 +11,7 @@ const Cart = () => {
   const handleShow = () => setShow(true);
   const onOrderHandler = () => {
     onOrder();
-    alert("Order Placed");
+    alert("Order has Been Placed");
   };
   const CartItems = items.map((item) => {
     const removeItemHandler = () => {
