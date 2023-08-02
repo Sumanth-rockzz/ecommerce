@@ -1,63 +1,114 @@
-import React, { useState , useContext} from 'react';
-import {Button,Badge,Modal} from 'react-bootstrap';
-import CartContext from '../Context/cartContext';
-import cartItemsArr from './cartItemsArr';
-const Cart=()=>{
+import React, { useState, useContext } from "react";
+import { Button, Badge, Modal } from "react-bootstrap";
+import CartContext from "../Context/cartContext";
+import CartIcon from "./cartIcon";
+const Cart = () => {
+  const { addItem, removeItem, items, onOrder } = useContext(CartContext);
 
-const removeItemHandler=()=>{};
-const addItemToCart=()=>{};
-  const {items} = useContext(CartContext);
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const CartItems = cartItemsArr.map((item) => (
-    <tr style={{textAlign:'center'}}>
-      <td><img src={item.imageUrl} alt="product" style={{width:"80px",height:'80px'}}/></td>
-      <td>{item.title}</td>
-      <td>₹{item.price}</td>
-      <td >{item.quantity}</td>
-      <td><Button variant='warning' onClick={removeItemHandler}>−</Button></td>
-      <td><Button variant='success' onClick={addItemToCart}>+</Button></td>
-    </tr>
-  ));
-  const totalItemsCount = cartItemsArr.reduce((acc, item) => acc + item.quantity, 0);
+  const onOrderHandler = () => {
+    onOrder();
+    alert("Order has Been Placed");
+  };
+  const CartItems = items.map((item) => {
+    const removeItemHandler = () => {
+      removeItem(item.id);
+    };
+    const addItemHandler = () => {
+      addItem(item);
+    };
+    return (
+      <tr key={item.id} style={{ textAlign: "center" }}>
+        <td>
+          <img
+            src={item.imageUrl}
+            alt="product"
+            style={{ width: "80px", height: "80px" }}
+          />
+        </td>
+        <td>{item.title}</td>
+        <td>₹{item.price}</td>
+        <td>{item.quantity}</td>
+        <td>
+          <Button variant="warning" onClick={removeItemHandler}>
+            −
+          </Button>
+        </td>
+        <td>
+          <Button variant="success" onClick={addItemHandler}>
+            +
+          </Button>
+        </td>
+      </tr>
+    );
+  });
+  const totalItemsCount = items.reduce((acc, item) => acc + item.quantity, 0);
+  const totalAmount = items.reduce(
+    (acc, item) => acc + item.quantity * item.price,
+    0
+  );
+  let hasItems = totalItemsCount > 0;
   return (
     <>
       <Button variant="success" onClick={handleShow}>
-          My Cart <Badge bg="dark">{totalItemsCount}</Badge>
-          <span className="visually-hidden">cart-items</span>
-        </Button>
+        My Cart <Badge bg="dark">{totalItemsCount}</Badge>
+        <span className="visually-hidden">cart-items</span>
+      </Button>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title style={{textAlign:"center"}}><b>Your Cart</b></Modal.Title>
+          <Modal.Title>
+            <div>
+              <CartIcon />
+              <b>My Cart</b>
+            </div>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <table>
-                <thead>
-                    <tr style={{textAlign:'center'}}>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {CartItems}
-                </tbody>
+          {hasItems && (
+            <table className="table table-striped">
+              <thead>
+                <tr style={{ textAlign: "center" }}>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                </tr>
+              </thead>
+              <tbody>{CartItems}</tbody>
             </table>
-          </Modal.Body>
+          )}
+          {!hasItems && (
+            <h5 style={{ textAlign: "center" }}>
+              <b>Your cart is empty!!</b>
+            </h5>
+          )}
+          {hasItems && (
+            <div style={{ marginLeft: "60%" }}>
+              <span>
+                <b>Total Amount</b>
+              </span>
+              <span>
+                <b> ₹{totalAmount.toFixed(2)}</b>
+              </span>
+            </div>
+          )}
+        </Modal.Body>
         <Modal.Footer>
           <Button variant="warning" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="success" onClick={handleClose}>
-            Order
-          </Button>
+          {hasItems && (
+            <Button variant="success" onClick={(handleClose, onOrderHandler)}>
+              Order
+            </Button>
+          )}
         </Modal.Footer>
       </Modal>
     </>
   );
-}
+};
 export default Cart;
