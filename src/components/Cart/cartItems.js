@@ -12,6 +12,7 @@ const Cart = () => {
   const onOrderHandler = () => {
     onOrder();
     alert("Order has Been Placed");
+    handleClose();
   };
   const CartItems = items.map((item) => {
     const removeItemHandler = () => {
@@ -102,7 +103,7 @@ const Cart = () => {
             Close
           </Button>
           {hasItems && (
-            <Button variant="success" onClick={(handleClose, onOrderHandler)}>
+            <Button variant="success" onClick={onOrderHandler}>
               Order
             </Button>
           )}

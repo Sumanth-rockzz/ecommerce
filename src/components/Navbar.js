@@ -1,29 +1,32 @@
 import { Nav, Container, Navbar } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 import Cart from "./Cart/cartItems";
 
 const NavBar = () => {
   return (
     <>
       <Navbar bg="warning" variant="light" expand="lg">
-        <Container className="justify-content-center display-flex">
+        <Container>
           <Nav>
             <Nav.Item>
-              <Nav.Link href="/home">
+              <NavLink to="/home" style={{ marginRight: "50px" }}>
                 <b>Home</b>
-              </Nav.Link>
+              </NavLink>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link href="/store">
+              <NavLink to="/store" style={{ marginRight: "50px" }}>
                 <b>Store</b>
-              </Nav.Link>
+              </NavLink>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link href="/about">
-                <b>About</b>
-              </Nav.Link>
+              <NavLink to="/aboutUs" style={{ marginRight: "50px" }}>
+                <b>About Us</b>
+              </NavLink>
             </Nav.Item>
           </Nav>
-          <Cart />
+          <div className="d-flex justify-content-end">
+            <Cart />
+          </div>
         </Container>
       </Navbar>
     </>
