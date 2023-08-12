@@ -18,7 +18,7 @@ const ProductCarousel = () => {
         <Carousel.Item>
           <img
             src="https://prasadyash2411.github.io/ecom-website/img/Album%201.png"
-            alt="Image 1"
+            alt="i 1"
           />
           <Carousel.Caption>
             <h3>First slide label</h3>
@@ -28,7 +28,7 @@ const ProductCarousel = () => {
         <Carousel.Item>
           <img
             src="https://prasadyash2411.github.io/ecom-website/img/Album%201.png"
-            alt="Image 2"
+            alt="i 2"
           />
           <Carousel.Caption>
             <h3>Second slide label</h3>
@@ -38,7 +38,7 @@ const ProductCarousel = () => {
         <Carousel.Item>
           <img
             src="https://prasadyash2411.github.io/ecom-website/img/Album%201.png"
-            alt="Image 3"
+            alt="i 3"
           />
           <Carousel.Caption>
             <h3>Third slide label</h3>

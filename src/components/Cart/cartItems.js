@@ -1,25 +1,30 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import { Button, Badge, Modal } from "react-bootstrap";
-import CartContext from "../Context/cartContext";
+import { useSelector, useDispatch } from "react-redux";
+import { uiActions } from "../../reduxstore/ui-slice";
+import { cartActions } from "../../reduxstore/cart-slice";
 import CartIcon from "./cartIcon";
 const Cart = () => {
-  const { addItem, removeItem, items, onOrder } = useContext(CartContext);
+  const cartIsVisible = useSelector((state) => state.ui.cartIsVisible);
+  const items = useSelector((state) => state.cart.items);
+  const dispatch = useDispatch();
 
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const onOrderHandler = () => {
-    onOrder();
-    alert("Order has Been Placed");
-    handleClose();
+  const showCartModalHandler = () => {
+    dispatch(uiActions.handleShowCartModal());
   };
+
+  const onOrderHandler = () => {
+    dispatch(cartActions.onOrder());
+    alert("Order has Been Placed");
+    dispatch(uiActions.handleShowCartModal());
+  };
+
   const CartItems = items.map((item) => {
     const removeItemHandler = () => {
-      removeItem(item.id);
+      dispatch(cartActions.removeItem(item.id));
     };
     const addItemHandler = () => {
-      addItem(item);
+      dispatch(cartActions.addItem(item));
     };
     return (
       <tr key={item.id} style={{ textAlign: "center" }}>
@@ -54,12 +59,11 @@ const Cart = () => {
   let hasItems = totalItemsCount > 0;
   return (
     <>
-      <Button variant="success" onClick={handleShow}>
+      <Button variant="success" onClick={showCartModalHandler}>
         My Cart <Badge bg="dark">{totalItemsCount}</Badge>
         <span className="visually-hidden">cart-items</span>
       </Button>
-
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={cartIsVisible} onHide={showCartModalHandler}>
         <Modal.Header closeButton>
           <Modal.Title>
             <div>
@@ -99,7 +103,7 @@ const Cart = () => {
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="warning" onClick={handleClose}>
+          <Button variant="warning" onClick={showCartModalHandler}>
             Close
           </Button>
           {hasItems && (
