@@ -7,6 +7,8 @@ import CartIcon from "./cartIcon";
 const Cart = () => {
   const cartIsVisible = useSelector((state) => state.ui.cartIsVisible);
   const items = useSelector((state) => state.cart.items);
+  const totalItemsCount = useSelector((state) => state.cart.totalQuantity);
+  const totalAmount = useSelector((state) => state.cart.totalAmount);
   const dispatch = useDispatch();
 
   const showCartModalHandler = () => {
@@ -51,11 +53,7 @@ const Cart = () => {
       </tr>
     );
   });
-  const totalItemsCount = items.reduce((acc, item) => acc + item.quantity, 0);
-  const totalAmount = items.reduce(
-    (acc, item) => acc + item.quantity * item.price,
-    0
-  );
+
   let hasItems = totalItemsCount > 0;
   return (
     <>
