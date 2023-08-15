@@ -1,16 +1,16 @@
-import { useContext } from "react";
 import { Row, Col } from "react-bootstrap";
 import productsArr from "./products";
 import ProductCard from "./ProductCard";
-import cartContext from "../Context/cartContext";
+import { useDispatch } from "react-redux";
+import { cartActions } from "../../reduxstore/cart-slice";
 
 const StorePage = () => {
-  const { addItem } = useContext(cartContext);
+  const dispatch = useDispatch();
 
   const storeDisplay = productsArr.map((product) => {
     const addToCartHandler = (e) => {
       e.preventDefault();
-      addItem({ ...product, quantity: 1 });
+      dispatch(cartActions.addItem({ ...product, quantity: 1 }));
     };
     return (
       <Col key={product.id} className="mt-5">
